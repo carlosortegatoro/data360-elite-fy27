@@ -1,0 +1,78 @@
+{
+  "program": {
+    "name": "Data360 Elite Program",
+    "brand": "Data360",
+    "subtitle": "Elite Program",
+    "year": "FY27",
+    "description": "El punto de encuentro del equipo. Consulta el pre-work, la agenda y los materiales de cada cita.",
+    "footer": "Alliances & Channel · Solution Engineering",
+    "timezone": "Europe/Madrid",
+    "timezoneLabel": "Hora de Madrid",
+    "featured": "octubre-2026"
+  },
+  "sessions": [
+    {
+      "slug": "octubre-2026",
+      "title": "Octubre 2026",
+      "published": true,
+      "edition": "Post Dreamforce Edition",
+      "date": "2026-10-15",
+      "start": "09:30",
+      "end": "14:00",
+      "summary": "Novedades de Dreamforce, Headless & Agent Memory y una sesión práctica con Data 360.",
+      "prework": {
+        "intro": "Llega preparado para el hands-on con Data 360.",
+        "note": "Preparación propuesta a partir de la guía práctica del programa. Pendiente de validar el alcance del pre-work con el equipo.",
+        "tasks": [
+          {
+            "title": "Revisa la guía práctica",
+            "description": "Lee el objetivo y el apartado «Antes de empezar» de SOMA Casa: GitHub Pages + Salesforce Data 360."
+          },
+          {
+            "title": "Comprueba tu cuenta de GitHub",
+            "description": "Necesitarás acceso para crear tu propio repositorio y configurar GitHub Pages."
+          },
+          {
+            "title": "Confirma el acceso a Data 360",
+            "description": "Comprueba que tu organización tiene Data 360 habilitado y que dispones de permisos para Website Connectors, Data Streams y mapeos."
+          },
+          {
+            "title": "Prepara el navegador",
+            "description": "Comprueba que puedes acceder a GitHub y Salesforce, y que JavaScript está habilitado."
+          }
+        ],
+        "resources": [
+          {
+            "title": "Tu propia tienda SOMA Casa",
+            "description": "GitHub Pages + Salesforce Data 360. Una práctica desde el navegador, sin terminal ni servidor.",
+            "url": "https://docs.google.com/document/d/1NASQvLR2CMY3oI5HYK5te6IsXj3q8PEw4smeyXvX0As/edit?usp=drivesdk",
+            "button": "Abrir guía práctica",
+            "format": "Google Docs",
+            "download": false
+          }
+        ]
+      },
+      "agenda": {
+        "note": "Bloques de la presentación de octubre. Las horas de cada bloque están pendientes de confirmar.",
+        "items": [
+          { "title": "Introducción y recap", "start": null, "end": null },
+          { "title": "Novedades de Dreamforce ’26", "start": null, "end": null },
+          { "title": "Headless & Agent Memory", "start": null, "end": null },
+          { "title": "Pausa", "start": null, "end": null },
+          { "title": "Hands-on", "start": null, "end": null },
+          { "title": "Cierre", "start": null, "end": null }
+        ]
+      },
+      "materials": [
+        {
+          "title": "Presentación de Octubre 2026",
+          "description": "FY27 D36O Elite Program · Post Dreamforce Edition",
+          "url": "https://docs.google.com/presentation/d/1GLvuWKXKLsigor2tubuP-NuU3juj0jkk-EeCOVDJEsI/edit?usp=drivesdk",
+          "button": "Abrir presentación",
+          "format": "Google Slides",
+          "download": false
+        }
+      ]
+    }
+  ]
+}

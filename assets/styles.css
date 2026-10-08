@@ -88,6 +88,12 @@ body { margin: 0; background: var(--elite-bg); }
 #elite-site .elite-materials-copy { flex: 1 1 240px; }
 #elite-site .elite-materials-copy p { color: var(--elite-muted); font-size: 14px; margin: 0; }
 #elite-site .elite-materials-copy h3 { font-size: 18px; }
+#elite-site .elite-sessions-list, #elite-site .elite-materials-list, #elite-site .elite-prework-resources { display: grid; gap: 16px; }
+#elite-site .elite-work-single { display: grid; gap: 24px; }
+#elite-site .elite-resource .elite-small { margin: 0 0 16px; }
+#elite-site .elite-materials-copy .elite-small { margin-top: 8px; }
+#elite-site .elite-resource, #elite-site .elite-materials-copy, #elite-site .elite-session-copy { min-width: 0; overflow-wrap: anywhere; }
+#elite-site .elite-button { max-width: 100%; }
 #elite-site .elite-divider { border: 0; border-top: 1px solid var(--elite-line); margin: 36px 0; }
 #elite-site .elite-footer { border-top: 1px solid var(--elite-line); padding: 20px 0; color: var(--elite-muted); font-size: 12px; }
 #elite-site .elite-footer-inner { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px; }

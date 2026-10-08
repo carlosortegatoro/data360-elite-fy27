@@ -5,3 +5,6 @@ tools/
 GOOGLE_SITES_SETUP.txt
 _site/
 .publish/
+dist/
+__pycache__/
+*.pyc

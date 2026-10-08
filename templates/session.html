@@ -1,0 +1,34 @@
+<section class="elite-hero" aria-labelledby="session-title">
+  <div class="elite-shell">
+    <div class="elite-breadcrumb"><a href="index.html">Inicio</a><span aria-hidden="true">/</span>$title</div>
+    <p class="elite-eyebrow">$site_name · $year</p>
+    <h1 id="session-title">$title</h1>
+    $edition
+    <div class="elite-inline-meta"><span>$date_label</span><strong>$start–$end</strong><span>$timezone_label · $timezone</span></div>
+    <div class="elite-actions"><a class="elite-button" href="#pre-work">Preparar el pre-work <span aria-hidden="true">↓</span></a><a class="elite-button elite-button-secondary" href="#horario">Ver horario</a></div>
+  </div>
+</section>
+<div class="elite-shell elite-section">
+  <nav class="elite-jump-nav" aria-label="Secciones de la cita"><a href="#pre-work">Pre-work</a><a href="#horario">Horario</a><a href="#materiales">Materiales</a></nav>
+  <section id="pre-work" aria-labelledby="pre-work-title">
+    <p class="elite-eyebrow">Antes del encuentro</p>
+    <h2 id="pre-work-title">Pre-work</h2>
+    $prework_intro
+    $prework_note
+    <div class="$prework_class">$tasks$prework_resources</div>
+  </section>
+  <hr class="elite-divider">
+  <section id="horario" aria-labelledby="schedule-title">
+    <p class="elite-eyebrow">$short_date · $timezone_label</p>
+    <h2 id="schedule-title">Horario y agenda</h2>
+    <p><strong>Inicio: $start · Fin: $end</strong></p>
+    $agenda
+  </section>
+  <hr class="elite-divider">
+  <section id="materiales" aria-labelledby="materials-title">
+    <p class="elite-eyebrow">Recursos de la cita</p>
+    <h2 id="materials-title">Materiales</h2>
+    <div class="elite-materials-list">$materials</div>
+  </section>
+  <div class="elite-actions"><a href="index.html">← Volver a las citas del programa</a></div>
+</div>

@@ -1,0 +1,21 @@
+{
+  "slug": "nueva-cita",
+  "title": "Nueva cita",
+  "published": false,
+  "edition": "",
+  "date": null,
+  "start": null,
+  "end": null,
+  "summary": "",
+  "prework": {
+    "intro": "",
+    "note": "",
+    "tasks": [],
+    "resources": []
+  },
+  "agenda": {
+    "note": "",
+    "items": []
+  },
+  "materials": []
+}
