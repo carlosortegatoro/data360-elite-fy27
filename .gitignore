@@ -1,0 +1,7 @@
+.DS_Store
+.env
+.env.*
+tools/
+GOOGLE_SITES_SETUP.txt
+_site/
+.publish/
