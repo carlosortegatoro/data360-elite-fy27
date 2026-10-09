@@ -19,7 +19,7 @@
       "date": "2026-10-15",
       "start": "09:30",
       "end": "14:00",
-      "summary": "Novedades de Dreamforce, Headless & Agent Memory y una sesión práctica con Data 360.",
+      "summary": "Novedades de Dreamforce, Headless Data 360 y una sesión práctica con Data 360.",
       "prework": {
         "intro": "Prepara tu organización Salesforce y tu tienda SOMA Casa siguiendo la guía antes del evento.",
         "note": "",
@@ -37,7 +37,7 @@
         ]
       },
       "agenda": {
-        "note": "Bloques de la presentación de octubre. Las horas de cada bloque están pendientes de confirmar.",
+        "note": "Agenda de octubre. Las horas de cada bloque están pendientes de confirmar.",
         "items": [
           {
             "title": "Introducción y recap",
@@ -50,7 +50,7 @@
             "end": null
           },
           {
-            "title": "Headless & Agent Memory",
+            "title": "Headless Data 360",
             "start": null,
             "end": null
           },
@@ -79,14 +79,6 @@
           "button": "Descargar materiales",
           "format": "ZIP",
           "download": true
-        },
-        {
-          "title": "Presentación de Octubre 2026",
-          "description": "FY27 D36O Elite Program · Post Dreamforce Edition",
-          "url": "https://docs.google.com/presentation/d/1GLvuWKXKLsigor2tubuP-NuU3juj0jkk-EeCOVDJEsI/edit?usp=drivesdk",
-          "button": "Abrir presentación",
-          "format": "Google Slides",
-          "download": false
         }
       ]
     }

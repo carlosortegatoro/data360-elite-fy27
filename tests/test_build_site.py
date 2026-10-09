@@ -74,7 +74,7 @@ class BuildSiteTests(unittest.TestCase):
                     self.assertIn(parsed.fragment, page.ids)
         self.assertIn("files/octubre-2026/Guia_Prework_SOMA_2026.pdf", (output / "octubre-2026.html").read_text())
         self.assertNotIn("docs.google.com/document/", (output / "octubre-2026.html").read_text())
-        self.assertIn("docs.google.com/presentation/", (output / "octubre-2026.html").read_text())
+        self.assertNotIn("docs.google.com/presentation/", (output / "octubre-2026.html").read_text())
 
     def test_new_published_session_creates_page_home_entry_and_navigation(self):
         session = deepcopy(self.data["sessions"][0])

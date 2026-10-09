@@ -40,8 +40,7 @@ en la home. Coloca primero el documento o fichero que quieras destacar.
 Los recursos externos se abren en otra pestaña y mantienen los permisos de su
 proveedor. Para acceso sin iniciar sesión, el recurso debe permitir acceso público
 o mediante enlace. Publicar el microsite no concede acceso a los documentos de Drive.
-La presentación de Drive todavía requiere configurar y comprobar el acceso para
-asistentes externos. La guía PDF y el ZIP se alojan directamente en el microsite.
+La guía PDF y el ZIP se alojan directamente en el microsite.
 
 ## Añadir un fichero descargable
 
