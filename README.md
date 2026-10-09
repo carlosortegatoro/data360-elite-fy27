@@ -8,8 +8,13 @@ puedes modificar ese archivo desde GitHub. Quien edite necesita acceso de escrit
 al repositorio.
 
 La cita de octubre mantiene el 15 de octubre de 2026, de 09:30 a 14:00, hora de Madrid.
-El pre-work sigue marcado como propuesta y las horas de los bloques están pendientes
-de confirmar.
+La home ofrece acceso directo a la guía PDF y al ZIP de materiales, muestra la agenda
+y permite leer el PDF con **Leer el pre-work aquí**, sin abrir otra página de la cita.
+Las horas de los bloques están pendientes de confirmar.
+
+El botón **Pre-work** utiliza el primer recurso de `prework.resources`, y
+**Materiales** el primero de `materials`. Los recursos adicionales también se muestran
+en la home. Coloca primero el documento o fichero que quieras destacar.
 
 ## Añadir un enlace externo
 
@@ -35,8 +40,8 @@ de confirmar.
 Los recursos externos se abren en otra pestaña y mantienen los permisos de su
 proveedor. Para acceso sin iniciar sesión, el recurso debe permitir acceso público
 o mediante enlace. Publicar el microsite no concede acceso a los documentos de Drive.
-Los dos enlaces actuales de Drive todavía requieren configurar y comprobar el acceso
-para asistentes externos.
+La presentación de Drive todavía requiere configurar y comprobar el acceso para
+asistentes externos. La guía PDF y el ZIP se alojan directamente en el microsite.
 
 ## Añadir un fichero descargable
 
@@ -69,6 +74,26 @@ El repositorio es público. Los archivos referenciados de `files/` se copian al
 microsite y se pueden abrir sin cuenta de GitHub. Los archivos subidos pero todavía
 sin referencia no se copian al sitio, aunque siguen siendo visibles en el repositorio.
 
+## Mostrar una guía PDF dentro del microsite
+
+En un recurso de `prework.resources`, usa una ruta local a un PDF, `download: false`
+y `embed: true`:
+
+```json
+{
+  "title": "Guía de pre-work",
+  "url": "files/octubre-2026/Guia_Prework_SOMA_2026.pdf",
+  "button": "Abrir guía PDF",
+  "format": "PDF",
+  "download": false,
+  "embed": true
+}
+```
+
+La guía se enlaza directamente y aparece una vista integrada desplegable en la home
+y en la página de la cita. Incluye un enlace alternativo para navegadores que no
+visualizan PDFs integrados. Usa `embed: false` u omítelo para recursos sin visor.
+
 ## Añadir una nueva cita
 
 1. Copia el objeto de **[content/session.example.json](content/session.example.json)**
@@ -80,7 +105,7 @@ sin referencia no se copian al sitio, aunque siguen siendo visibles en el reposi
 4. Añade los textos de `prework`, los bloques de `agenda.items` y los `materials`.
 5. Cambia `published` a `true` cuando la cita esté preparada.
 
-La página, su entrada en la home y la navegación se generan automáticamente.
+La página y su entrada con recursos y agenda en la home se generan automáticamente.
 Las citas con `published: false` se mantienen como borrador y no aparecen en la web.
 Para retirar una cita destacada, cambia también `program.featured` a otra cita
 publicada o a `""`. El orden de las citas es el de la lista `sessions`.
@@ -129,5 +154,8 @@ python3 scripts/build_site.py
 El resultado está en `dist/`. Los estilos se editan en `assets/styles.css`, la
 estructura en `templates/` y el generador en `scripts/build_site.py`.
 No edites los archivos generados de `dist/`: se vuelven a crear en cada publicación.
+
+El logo de Salesforce se incluye como `assets/salesforce-logo.jpg`, obtenido de la
+[biblioteca oficial de Salesforce](https://www.salesforce.com/news/media-library/).
 
 El flujo de publicación sigue la [documentación oficial de GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages).

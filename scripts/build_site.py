@@ -76,7 +76,12 @@ def validate_resources(resources, project, where):
         text(resource.get("title"), location + ".title", required=True)
         for field in ("description", "button", "format"):
             text(resource.get(field, ""), location + "." + field)
-        resource_url(resource, project, location)
+        _, local = resource_url(resource, project, location)
+        embed = resource.get("embed", False)
+        if not isinstance(embed, bool):
+            raise ValueError(f"{location}.embed: usa true o false.")
+        if embed and (local is None or PurePosixPath(local).suffix.lower() != ".pdf" or resource.get("download", False)):
+            raise ValueError(f"{location}.embed: la vista integrada requiere un PDF local con download: false.")
 
 
 def validate(data, project):
@@ -158,19 +163,57 @@ def date_labels(session):
     return day, short, f"{WEEKDAYS[day.weekday()]}, {short} de {day.year}"
 
 
-def render_resource(resource, project, prework=False):
+def resource_link(resource, project, label=None, primary=False, aria_label=""):
     url, local = resource_url(resource, project, resource["title"])
     download = resource.get("download", False)
     attributes = (' download="' + e(PurePosixPath(local).name) + '"') if download else (' target="_blank" rel="noopener noreferrer"' if local is None else '')
-    button = resource.get("button") or ("Descargar fichero" if download else "Abrir recurso")
+    if aria_label:
+        attributes += f' aria-label="{e(aria_label)}"'
+    button = label or resource.get("button") or ("Descargar fichero" if download else "Abrir recurso")
     arrow = "↓" if download else ("↗" if local is None else "→")
+    classes = "elite-button" if primary else "elite-button elite-button-secondary"
+    return f'<a class="{classes}" href="{e(url)}"{attributes}>{e(button)} <span aria-hidden="true">{arrow}</span></a>'
+
+
+def render_pdf(resource, project):
+    if not resource.get("embed", False):
+        return ""
+    url, _ = resource_url(resource, project, resource["title"])
+    return f'''<details class="elite-pdf-preview"><summary>Leer el pre-work aquí</summary>
+<div class="elite-pdf-body"><object class="elite-pdf-document" data="{e(url)}" type="application/pdf" title="{e(resource['title'])}" width="100%" height="640">
+<p>Tu navegador no muestra el PDF integrado. <a href="{e(url)}">Abrir la guía PDF</a>.</p></object>
+<p class="elite-small">También puedes <a href="{e(url)}">abrir la guía PDF</a> directamente.</p></div></details>'''
+
+
+def session_actions(session, project, agenda_url):
+    links = []
+    prework = session.get("prework", {}).get("resources", [])
+    materials = session.get("materials", [])
+    if prework:
+        links.append(resource_link(prework[0], project, "Pre-work", primary=True, aria_label=f'Pre-work: {prework[0]["title"]}'))
+    links.append(f'<a class="elite-button elite-button-secondary" href="{e(agenda_url)}">Agenda</a>')
+    if materials:
+        links.append(resource_link(materials[0], project, "Materiales", aria_label=f'Materiales: {materials[0]["title"]}'))
+    return "".join(links)
+
+
+def render_resource(resource, project, prework=False):
     metadata = f'<p class="elite-small">{e(resource["format"])}</p>' if resource.get("format") else ""
-    link = f'<a class="elite-button elite-button-secondary" href="{e(url)}"{attributes}>{e(button)} <span aria-hidden="true">{arrow}</span></a>'
+    link = resource_link(resource, project)
     title = f'<h3>{e(resource["title"])}</h3>'
     description = f'<p>{e(resource.get("description", ""))}</p>' if resource.get("description") else ""
     if prework:
-        return f'<article class="elite-resource">{title}{description}{metadata}{link}</article>'
-    return f'<article class="elite-materials"><div class="elite-materials-copy">{title}{description}{metadata}</div>{link}</article>'
+        return f'<article class="elite-resource">{title}{description}{metadata}{link}{render_pdf(resource, project)}</article>'
+    return f'<article class="elite-materials"><div class="elite-materials-copy">{title}{description}{metadata}</div>{link}{render_pdf(resource, project)}</article>'
+
+
+def render_agenda(session):
+    agenda = session.get("agenda", {})
+    rows = []
+    for index, item in enumerate(agenda.get("items", []), 1):
+        label = f'{item["start"]}–{item["end"]}' if item.get("start") else "Por confirmar"
+        rows.append(f'<tr><td>{index:02}</td><td>{e(item["title"])}</td><td>{e(label)}</td></tr>')
+    return f'<table class="elite-agenda"><caption class="elite-agenda-caption">{e(agenda.get("note", ""))}</caption><thead><tr><th scope="col">#</th><th scope="col">Bloque</th><th scope="col">Hora</th></tr></thead><tbody>{"".join(rows)}</tbody></table>' if rows else '<p>La agenda detallada se publicará aquí.</p>'
 
 
 def render_home(project, program, sessions):
@@ -178,19 +221,24 @@ def render_home(project, program, sessions):
     cards = []
     for session in sessions:
         day, _, date_label = date_labels(session)
-        cards.append(f'''<article class="elite-session">
+        slug = session["slug"]
+        previews = ''.join(render_pdf(resource, project) for resource in session.get("prework", {}).get("resources", []))
+        extra_resources = session.get("prework", {}).get("resources", [])[1:] + session.get("materials", [])[1:]
+        additional = f'<div class="elite-additional-resources">{"".join(resource_link(resource, project) for resource in extra_resources)}</div>' if extra_resources else ""
+        cards.append(f'''<article id="cita-{slug}" class="elite-session">
+<div class="elite-session-heading">
 <div class="elite-session-date" aria-hidden="true"><strong>{day.day}</strong><span>{MONTHS[day.month][:3].upper()} · {day.year}</span></div>
 <div class="elite-session-copy"><p class="elite-eyebrow">{e(session.get('edition', ''))}</p><h3>{e(session['title'])}</h3><p>{e(session.get('summary', ''))}</p>
-<div class="elite-topic-labels"><span>Pre-work</span><span>Agenda</span><span>Materiales</span></div>
-<p class="elite-session-meta">{e(date_label)} · {e(session['start'])}–{e(session['end'])} · {e(program['timezoneLabel'])}</p></div>
-<a class="elite-button elite-button-secondary" href="{session['slug']}.html" aria-label="Abrir la cita {e(session['title'])}">Abrir cita <span aria-hidden="true">→</span></a></article>''')
+<p class="elite-session-meta">{e(date_label)} · {e(session['start'])}–{e(session['end'])} · {e(program['timezoneLabel'])}</p>
+<div class="elite-actions">{session_actions(session, project, '#horario-' + slug)}</div></div></div>
+{previews}
+<section id="horario-{slug}" class="elite-session-agenda" aria-labelledby="agenda-title-{slug}"><h4 id="agenda-title-{slug}">Horario y agenda</h4>{render_agenda(session)}</section>
+{additional}</article>''')
     featured_date = ""
-    featured_button = '<a class="elite-button" href="#citas">Consultar citas</a>'
     if featured:
         day, _, _ = date_labels(featured)
-        featured_button = f'<a class="elite-button" href="{featured["slug"]}.html">Abrir cita destacada <span aria-hidden="true">→</span></a>'
         featured_date = f'''<aside class="elite-date-card" aria-label="Cita destacada: {e(featured['title'])}"><p class="elite-eyebrow">Cita destacada</p><div class="elite-date-number">{day.day}</div><div class="elite-date-month">{MONTHS[day.month].capitalize()} {day.year}</div><div class="elite-date-time">{e(featured['start'])} — {e(featured['end'])}</div><span class="elite-small">{e(program['timezoneLabel'])} · {e(program['timezone'])}</span></aside>'''
-    return template(project, "home.html", year=e(program["year"]), brand=e(program["brand"]), subtitle=e(program["subtitle"]), description=e(program.get("description", "")), featured_button=featured_button, featured_date=featured_date, sessions="\n".join(cards) or '<p>Las citas se publicarán aquí.</p>')
+    return template(project, "home.html", year=e(program["year"]), brand=e(program["brand"]), subtitle=e(program["subtitle"]), description=e(program.get("description", "")), featured_date=featured_date, sessions="\n".join(cards) or '<p>Las citas se publicarán aquí.</p>')
 
 
 def render_session(project, program, session):
@@ -202,14 +250,9 @@ def render_session(project, program, session):
     resources = f'<div class="elite-prework-resources">{resources}</div>' if resources else ""
     if not tasks and not resources and not prework.get("intro"):
         tasks = '<p>El pre-work se publicará aquí.</p>'
-    agenda = session.get("agenda", {})
-    rows = []
-    for index, item in enumerate(agenda.get("items", []), 1):
-        label = f'{item["start"]}–{item["end"]}' if item.get("start") else "Por confirmar"
-        rows.append(f'<tr><td>{index:02}</td><td>{e(item["title"])}</td><td>{e(label)}</td></tr>')
-    table = f'<table class="elite-agenda"><caption class="elite-agenda-caption">{e(agenda.get("note", ""))}</caption><thead><tr><th scope="col">#</th><th scope="col">Bloque</th><th scope="col">Hora</th></tr></thead><tbody>{"".join(rows)}</tbody></table>' if rows else '<p>La agenda detallada se publicará aquí.</p>'
+    table = render_agenda(session)
     materials = ''.join(render_resource(resource, project) for resource in session.get("materials", [])) or '<p>Los materiales se publicarán aquí.</p>'
-    return template(project, "session.html", title=e(session["title"]), site_name=e(program["name"]), year=e(program["year"]), edition=f'<p class="elite-lead">{e(session["edition"])}</p>' if session.get("edition") else "", date_label=e(date_label), short_date=e(short_date), start=e(session["start"]), end=e(session["end"]), timezone_label=e(program["timezoneLabel"]), timezone=e(program["timezone"]), prework_intro=f'<p>{e(prework["intro"])}</p>' if prework.get("intro") else "", prework_note=f'<p class="elite-note">{e(prework["note"])}</p>' if prework.get("note") else "", prework_class="elite-work-grid" if tasks and resources else "elite-work-single", tasks=tasks, prework_resources=resources, agenda=table, materials=materials)
+    return template(project, "session.html", title=e(session["title"]), site_name=e(program["name"]), year=e(program["year"]), edition=f'<p class="elite-lead">{e(session["edition"])}</p>' if session.get("edition") else "", date_label=e(date_label), short_date=e(short_date), start=e(session["start"]), end=e(session["end"]), timezone_label=e(program["timezoneLabel"]), timezone=e(program["timezone"]), prework_intro=f'<p>{e(prework["intro"])}</p>' if prework.get("intro") else "", prework_note=f'<p class="elite-note">{e(prework["note"])}</p>' if prework.get("note") else "", prework_class="elite-work-grid" if tasks and resources else "elite-work-single", tasks=tasks, prework_resources=resources, resource_actions=session_actions(session, project, '#horario'), agenda=table, materials=materials)
 
 
 def build_site(project=ROOT, data=None):
@@ -221,8 +264,7 @@ def build_site(project=ROOT, data=None):
     bodies.extend((session["slug"], render_session(project, program, session), session["title"]) for session in sessions)
     pages = {}
     for slug, body, title in bodies:
-        navigation = '<a href="index.html"' + (' aria-current="page"' if slug == "index" else '') + '>Inicio</a>'
-        navigation += ''.join(f'<a href="{session["slug"]}.html"' + (' aria-current="page"' if slug == session["slug"] else '') + f'>{e(session["title"])}</a>' for session in sessions)
+        navigation = '<a href="#citas">Citas</a>' if slug == "index" else '<a href="index.html">Inicio</a>'
         pages[slug + ".html"] = template(project, "layout.html", page_title=e(f'{title} · {program["year"]}'), description=e(program.get("description", "")), site_name=e(program["name"]), brand=e(program["brand"]), subtitle=e(program["subtitle"]), year=e(program["year"]), navigation=navigation, body=body, footer=e(program.get("footer", "")))
     downloads = set()
     for session in sessions:

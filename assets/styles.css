@@ -23,6 +23,7 @@ body { margin: 0; background: var(--elite-bg); }
 #elite-site .elite-header { background: var(--elite-surface); border-bottom: 1px solid var(--elite-line); }
 #elite-site .elite-header-inner { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
 #elite-site .elite-brand { color: var(--elite-ink); text-decoration: none; display: flex; align-items: center; gap: 12px; }
+#elite-site .elite-salesforce-logo { display: block; width: 120px; height: auto; flex: 0 0 auto; border-radius: 8px; background: white; }
 #elite-site .elite-brand-name { display: block; font-size: 21px; font-weight: 700; letter-spacing: -.6px; line-height: 1.2; }
 #elite-site .elite-brand-sub { display: block; font-size: 12px; color: var(--elite-muted); letter-spacing: 1px; text-transform: uppercase; }
 #elite-site .elite-year { padding: 5px 9px; background: var(--elite-soft); border-radius: 6px; color: var(--elite-blue); font-size: 12px; font-weight: 700; }
@@ -49,7 +50,17 @@ body { margin: 0; background: var(--elite-bg); }
 #elite-site .elite-section { padding: 40px 0; }
 #elite-site .elite-section-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
 #elite-site .elite-section-heading h2 { margin: 0; }
-#elite-site .elite-session { background: var(--elite-surface); border: 1px solid var(--elite-line); border-radius: 12px; padding: 28px; display: grid; grid-template-columns: 110px minmax(0, 1fr) auto; gap: 28px; align-items: center; }
+#elite-site .elite-session { background: var(--elite-surface); border: 1px solid var(--elite-line); border-radius: 12px; padding: 28px; }
+#elite-site .elite-session-heading { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 28px; align-items: center; }
+#elite-site .elite-session-copy .elite-actions { margin-top: 16px; }
+#elite-site .elite-session-agenda { margin-top: 28px; scroll-margin-top: 20px; }
+#elite-site .elite-session-agenda h4 { margin: 0 0 14px; font-size: 18px; }
+#elite-site .elite-additional-resources { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+#elite-site .elite-pdf-preview { margin-top: 24px; border: 1px solid var(--elite-line); border-radius: 8px; overflow: hidden; }
+#elite-site .elite-pdf-preview summary { padding: 14px 18px; color: var(--elite-blue); cursor: pointer; font-weight: 700; }
+#elite-site .elite-pdf-body { padding: 16px; border-top: 1px solid var(--elite-line); }
+#elite-site .elite-pdf-document { display: block; width: 100%; height: 640px; border: 0; background: white; }
+#elite-site .elite-pdf-body .elite-small { margin: 12px 0 0; }
 #elite-site .elite-session-date { background: var(--elite-soft); border-radius: 10px; padding: 14px; text-align: center; color: var(--elite-blue); }
 #elite-site .elite-session-date strong { display: block; font-size: 36px; letter-spacing: -1px; line-height: 1.2; }
 #elite-site .elite-session-date span { font-size: 13px; }
@@ -101,6 +112,7 @@ body { margin: 0; background: var(--elite-bg); }
 @media (max-width: 700px) {
   #elite-site .elite-shell { padding: 0 20px; }
   #elite-site .elite-header-inner { min-height: auto; padding-top: 18px; padding-bottom: 8px; flex-wrap: wrap; gap: 12px; }
+  #elite-site .elite-salesforce-logo { width: 96px; }
   #elite-site .elite-nav { width: 100%; gap: 24px; }
   #elite-site .elite-hero { padding: 32px 0; }
   #elite-site .elite-hero-grid { grid-template-columns: minmax(0, 1fr); gap: 24px; }
@@ -111,8 +123,11 @@ body { margin: 0; background: var(--elite-bg); }
   #elite-site .elite-date-card .elite-date-time { border: 0; padding: 0; font-size: 18px; }
   #elite-site .elite-date-card .elite-small { grid-column: 2; }
   #elite-site .elite-section { padding: 30px 0; }
-  #elite-site .elite-session { grid-template-columns: 74px minmax(0, 1fr); gap: 20px; padding: 20px; }
-  #elite-site .elite-session > .elite-button { grid-column: 1 / -1; justify-self: start; }
+  #elite-site .elite-session { padding: 20px; }
+  #elite-site .elite-session-heading { grid-template-columns: 74px minmax(0, 1fr); gap: 20px; }
+  #elite-site .elite-session-copy .elite-actions { gap: 8px; }
+  #elite-site .elite-session-copy .elite-button { padding: 10px 14px; }
+  #elite-site .elite-pdf-document { height: 480px; }
   #elite-site .elite-session-date { padding: 10px 8px; }
   #elite-site .elite-session h3 { font-size: 19px; }
   #elite-site .elite-guide-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }

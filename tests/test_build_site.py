@@ -29,6 +29,10 @@ class Page(HTMLParser):
             self.anchors.append(attrs)
         if tag == "link" and attrs.get("rel") == "stylesheet":
             self.links.append(attrs["href"])
+        if tag == "object":
+            self.links.append(attrs["data"])
+        if tag == "img":
+            self.links.append(attrs["src"])
 
 
 class BuildSiteTests(unittest.TestCase):
@@ -38,7 +42,7 @@ class BuildSiteTests(unittest.TestCase):
         self.project = Path(self.directory.name)
         for name in ("templates", "assets"):
             shutil.copytree(ROOT / name, self.project / name)
-        (self.project / "files").mkdir()
+        shutil.copytree(ROOT / "files", self.project / "files")
         self.data = json.loads((ROOT / "content/site.json").read_text())
 
     def build(self):
@@ -68,7 +72,8 @@ class BuildSiteTests(unittest.TestCase):
                     self.assertTrue((output / unquote(parsed.path)).is_file(), link)
                 else:
                     self.assertIn(parsed.fragment, page.ids)
-        self.assertIn("docs.google.com/document/", (output / "octubre-2026.html").read_text())
+        self.assertIn("files/octubre-2026/Guia_Prework_SOMA_2026.pdf", (output / "octubre-2026.html").read_text())
+        self.assertNotIn("docs.google.com/document/", (output / "octubre-2026.html").read_text())
         self.assertIn("docs.google.com/presentation/", (output / "octubre-2026.html").read_text())
 
     def test_new_published_session_creates_page_home_entry_and_navigation(self):
@@ -77,8 +82,9 @@ class BuildSiteTests(unittest.TestCase):
         self.data["sessions"].append(session)
         output = self.build()
         self.assertTrue((output / "cita-de-prueba.html").is_file())
-        self.assertIn('href="cita-de-prueba.html"', (output / "index.html").read_text())
-        self.assertIn('href="cita-de-prueba.html"', (output / "octubre-2026.html").read_text())
+        self.assertIn('id="cita-cita-de-prueba"', (output / "index.html").read_text())
+        self.assertIn('href="#horario-cita-de-prueba"', (output / "index.html").read_text())
+        self.assertIn('href="index.html"', (output / "cita-de-prueba.html").read_text())
 
     def test_unfinished_draft_is_not_published(self):
         self.data["sessions"].append({"slug": "borrador", "title": "Borrador sin fecha", "published": False})
@@ -88,7 +94,7 @@ class BuildSiteTests(unittest.TestCase):
 
     def test_local_download_is_copied_encoded_and_has_download_attribute(self):
         folder = self.project / "files/octubre-2026"
-        folder.mkdir()
+        folder.mkdir(exist_ok=True)
         (folder / "guía práctica.pdf").write_bytes(b"pdf-fixture")
         (folder / "sin-enlazar.txt").write_text("No publicar en el sitio")
         self.material("files/octubre-2026/guía práctica.pdf", download=True)
@@ -96,7 +102,7 @@ class BuildSiteTests(unittest.TestCase):
         self.assertEqual((output / "files/octubre-2026/guía práctica.pdf").read_bytes(), b"pdf-fixture")
         self.assertFalse((output / "files/octubre-2026/sin-enlazar.txt").exists())
         links = Page((output / "octubre-2026.html").read_text()).anchors
-        download = next(link for link in links if "download" in link)
+        download = next(link for link in links if link.get("download") == "guía práctica.pdf")
         self.assertEqual(download["download"], "guía práctica.pdf")
         self.assertEqual(download["href"], "files/octubre-2026/gu%C3%ADa%20pr%C3%A1ctica.pdf")
 
@@ -156,7 +162,34 @@ class BuildSiteTests(unittest.TestCase):
         source = (output / "octubre-2026.html").read_text()
         self.assertIn("&lt;script&gt;", source)
         self.assertIn("&lt;img", source)
-        self.assertFalse(any(tag in ("script", "img") for tag, _ in Page(source).tags))
+        self.assertFalse(any(tag == "script" or "onerror" in attrs for tag, attrs in Page(source).tags))
+        self.assertEqual([attrs["src"] for tag, attrs in Page(source).tags if tag == "img"], ["assets/salesforce-logo.jpg"])
+
+    def test_home_has_direct_resources_embedded_pdf_and_no_open_session_step(self):
+        output = self.build()
+        source = (output / "index.html").read_text()
+        page = Page(source)
+        pdf = "files/octubre-2026/Guia_Prework_SOMA_2026.pdf"
+        archive = "files/octubre-2026/Materiales.zip"
+        self.assertTrue(any(link["href"] == pdf and "download" not in link for link in page.anchors))
+        self.assertTrue(any(link["href"] == archive and link.get("download") == "Materiales.zip" for link in page.anchors))
+        self.assertTrue(any(tag == "object" and attrs["data"] == pdf and attrs["type"] == "application/pdf" for tag, attrs in page.tags))
+        self.assertNotIn("Abrir cita", source)
+        self.assertNotIn('href="octubre-2026.html"', source)
+        self.assertIn("horario-octubre-2026", page.ids)
+        for path in (pdf, archive, "assets/salesforce-logo.jpg"):
+            self.assertEqual((output / path).read_bytes(), (ROOT / path).read_bytes())
+
+    def test_embedded_preview_requires_local_pdf_opened_for_viewing(self):
+        resource = self.data["sessions"][0]["prework"]["resources"][0]
+        for fields in ({"url": "https://example.com/guia.pdf"}, {"url": "files/octubre-2026/Materiales.zip"}, {"download": True}, {"embed": "yes"}):
+            with self.subTest(fields=fields):
+                previous = dict(resource)
+                resource.update(fields)
+                with self.assertRaisesRegex(ValueError, "embed"):
+                    self.build()
+                resource.clear()
+                resource.update(previous)
 
     def test_duplicate_and_reserved_slugs_are_rejected(self):
         self.data["sessions"].append(deepcopy(self.data["sessions"][0]))

@@ -21,49 +21,65 @@
       "end": "14:00",
       "summary": "Novedades de Dreamforce, Headless & Agent Memory y una sesión práctica con Data 360.",
       "prework": {
-        "intro": "Llega preparado para el hands-on con Data 360.",
-        "note": "Preparación propuesta a partir de la guía práctica del programa. Pendiente de validar el alcance del pre-work con el equipo.",
-        "tasks": [
-          {
-            "title": "Revisa la guía práctica",
-            "description": "Lee el objetivo y el apartado «Antes de empezar» de SOMA Casa: GitHub Pages + Salesforce Data 360."
-          },
-          {
-            "title": "Comprueba tu cuenta de GitHub",
-            "description": "Necesitarás acceso para crear tu propio repositorio y configurar GitHub Pages."
-          },
-          {
-            "title": "Confirma el acceso a Data 360",
-            "description": "Comprueba que tu organización tiene Data 360 habilitado y que dispones de permisos para Website Connectors, Data Streams y mapeos."
-          },
-          {
-            "title": "Prepara el navegador",
-            "description": "Comprueba que puedes acceder a GitHub y Salesforce, y que JavaScript está habilitado."
-          }
-        ],
+        "intro": "Prepara tu organización Salesforce y tu tienda SOMA Casa siguiendo la guía antes del evento.",
+        "note": "",
+        "tasks": [],
         "resources": [
           {
-            "title": "Tu propia tienda SOMA Casa",
-            "description": "GitHub Pages + Salesforce Data 360. Una práctica desde el navegador, sin terminal ni servidor.",
-            "url": "https://docs.google.com/document/d/1NASQvLR2CMY3oI5HYK5te6IsXj3q8PEw4smeyXvX0As/edit?usp=drivesdk",
-            "button": "Abrir guía práctica",
-            "format": "Google Docs",
-            "download": false
+            "title": "Guía de pre-work SOMA 2026",
+            "description": "Preparación de tu org y tu tienda para el hands-on con Data 360 y Salesforce Personalization.",
+            "url": "files/octubre-2026/Guia_Prework_SOMA_2026.pdf",
+            "button": "Abrir guía PDF",
+            "format": "PDF · 23 páginas",
+            "download": false,
+            "embed": true
           }
         ]
       },
       "agenda": {
         "note": "Bloques de la presentación de octubre. Las horas de cada bloque están pendientes de confirmar.",
         "items": [
-          { "title": "Introducción y recap", "start": null, "end": null },
-          { "title": "Novedades de Dreamforce ’26", "start": null, "end": null },
-          { "title": "Headless & Agent Memory", "start": null, "end": null },
-          { "title": "Pausa", "start": null, "end": null },
-          { "title": "Hands-on", "start": null, "end": null },
-          { "title": "Cierre", "start": null, "end": null }
+          {
+            "title": "Introducción y recap",
+            "start": null,
+            "end": null
+          },
+          {
+            "title": "Novedades de Dreamforce ’26",
+            "start": null,
+            "end": null
+          },
+          {
+            "title": "Headless & Agent Memory",
+            "start": null,
+            "end": null
+          },
+          {
+            "title": "Pausa",
+            "start": null,
+            "end": null
+          },
+          {
+            "title": "Hands-on",
+            "start": null,
+            "end": null
+          },
+          {
+            "title": "Cierre",
+            "start": null,
+            "end": null
+          }
         ]
       },
       "materials": [
+        {
+          "title": "Materiales del hands-on SOMA 2026",
+          "description": "Descarga y descomprime el paquete para seguir la guía y preparar la sesión.",
+          "url": "files/octubre-2026/Materiales.zip",
+          "button": "Descargar materiales",
+          "format": "ZIP",
+          "download": true
+        },
         {
           "title": "Presentación de Octubre 2026",
           "description": "FY27 D36O Elite Program · Post Dreamforce Edition",
