@@ -194,6 +194,8 @@ def session_actions(session, project, agenda_url):
     links.append(f'<a class="elite-button elite-button-secondary" href="{e(agenda_url)}">Agenda</a>')
     if materials:
         links.append(resource_link(materials[0], project, "Materiales", aria_label=f'Materiales: {materials[0]["title"]}'))
+    extra_resources = prework[1:] + materials[1:]
+    links.extend(resource_link(resource, project) for resource in extra_resources)
     return "".join(links)
 
 
@@ -223,8 +225,6 @@ def render_home(project, program, sessions):
         day, _, date_label = date_labels(session)
         slug = session["slug"]
         previews = ''.join(render_pdf(resource, project) for resource in session.get("prework", {}).get("resources", []))
-        extra_resources = session.get("prework", {}).get("resources", [])[1:] + session.get("materials", [])[1:]
-        additional = f'<div class="elite-additional-resources">{"".join(resource_link(resource, project) for resource in extra_resources)}</div>' if extra_resources else ""
         cards.append(f'''<article id="cita-{slug}" class="elite-session">
 <div class="elite-session-heading">
 <div class="elite-session-date" aria-hidden="true"><strong>{day.day}</strong><span>{MONTHS[day.month][:3].upper()} · {day.year}</span></div>
@@ -233,7 +233,7 @@ def render_home(project, program, sessions):
 <div class="elite-actions">{session_actions(session, project, '#horario-' + slug)}</div></div></div>
 {previews}
 <section id="horario-{slug}" class="elite-session-agenda" aria-labelledby="agenda-title-{slug}"><h4 id="agenda-title-{slug}">Horario y agenda</h4>{render_agenda(session)}</section>
-{additional}</article>''')
+</article>''')
     featured_date = ""
     if featured:
         day, _, _ = date_labels(featured)

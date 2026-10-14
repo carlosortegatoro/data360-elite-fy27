@@ -8,13 +8,15 @@ puedes modificar ese archivo desde GitHub. Quien edite necesita acceso de escrit
 al repositorio.
 
 La cita de octubre mantiene el 15 de octubre de 2026, de 09:30 a 14:00, hora de Madrid.
-La home ofrece acceso directo a la guía PDF y al ZIP de materiales, muestra la agenda
+La home ofrece acceso directo a las guías PDF de pre-work y hands-on y al ZIP de materiales, muestra la agenda
 y permite leer el PDF con **Leer el pre-work aquí**, sin abrir otra página de la cita.
 Las horas de los bloques están pendientes de confirmar.
 
 El botón **Pre-work** utiliza el primer recurso de `prework.resources`, y
 **Materiales** el primero de `materials`. Los recursos adicionales también se muestran
-en la home. Coloca primero el documento o fichero que quieras destacar.
+junto a esos botones, usando su campo `button` como etiqueta. La guía del hands-on
+se añade como recurso de `materials` con `button: "Hands-on"`. Coloca primero el
+documento o fichero que quieras destacar.
 
 ## Añadir un enlace externo
 
@@ -40,7 +42,7 @@ en la home. Coloca primero el documento o fichero que quieras destacar.
 Los recursos externos se abren en otra pestaña y mantienen los permisos de su
 proveedor. Para acceso sin iniciar sesión, el recurso debe permitir acceso público
 o mediante enlace. Publicar el microsite no concede acceso a los documentos de Drive.
-La guía PDF y el ZIP se alojan directamente en el microsite.
+Las guías PDF y el ZIP se alojan directamente en el microsite.
 
 ## Añadir un fichero descargable
 

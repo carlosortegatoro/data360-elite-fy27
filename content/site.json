@@ -79,6 +79,14 @@
           "button": "Descargar materiales",
           "format": "ZIP",
           "download": true
+        },
+        {
+          "title": "Guía del hands-on SOMA 2026",
+          "description": "Guía para seguir la sesión práctica SOMA.",
+          "url": "files/octubre-2026/Guia_HandsOn_SOMA_2026.pdf",
+          "button": "Hands-on",
+          "format": "PDF · 13 páginas",
+          "download": false
         }
       ]
     }
