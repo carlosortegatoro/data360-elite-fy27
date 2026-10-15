@@ -87,6 +87,14 @@
           "button": "Hands-on",
           "format": "PDF · 13 páginas",
           "download": false
+        },
+        {
+          "title": "Guía del hands-on Headless Data 360",
+          "description": "Guía de usuario para la sesión práctica de Headless Data 360.",
+          "url": "files/octubre-2026/Guia_Headless_Data_360_2026.pdf",
+          "button": "Headless Data 360",
+          "format": "PDF · 10 páginas",
+          "download": false
         }
       ]
     }
