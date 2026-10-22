@@ -95,6 +95,14 @@
           "button": "Headless Data 360",
           "format": "PDF · 10 páginas",
           "download": false
+        },
+        {
+          "title": "Guía completa de Data 360 y Salesforce Personalization para SOMA Casa",
+          "description": "Guía completa para la preparación y el ejercicio práctico de SOMA Casa.",
+          "url": "files/octubre-2026/Guia_Demo_D360_Personalization_SOMA_revisada.pdf",
+          "button": "Guía completa",
+          "format": "PDF · 39 páginas",
+          "download": false
         }
       ]
     }
